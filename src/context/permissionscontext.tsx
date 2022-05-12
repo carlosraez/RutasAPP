@@ -4,6 +4,7 @@ import {
   PERMISSIONS,
   PermissionStatus,
   request,
+  openSettings,
 } from 'react-native-permissions';
 import { Platform, AppState } from 'react-native';
 
@@ -43,6 +44,9 @@ export const PermissionsProvider = ({ children }: any) => {
       permissionStatus = await request(
         PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
       );
+    }
+    if (permissionStatus === 'blocked') {
+      openSettings();
     }
     //destructuring all permissions from state
     setPermissions({ ...permissions, locationStatus: permissionStatus });
