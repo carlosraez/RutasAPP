@@ -1,5 +1,5 @@
-import React, { useRef, useEffect } from 'react';
-import MapView, { Marker } from 'react-native-maps';
+import React, { useRef, useEffect, useState } from 'react';
+import MapView, { Marker, Polyline } from 'react-native-maps';
 import { useLocation } from '../hooks/useLocation';
 import { LoadingScreen } from '../screens/LoadingScreen';
 import { Fab } from './Fab';
@@ -12,10 +12,12 @@ export const Maps = () => {
     followUser,
     currentUserPosition,
     stopFollowUserLocation,
+    routeLines,
   } = useLocation();
 
   const mapViewRef = useRef<MapView>();
   const followMe = useRef<boolean>(true);
+  const [showPolyLine, setShowPolyline] = useState(true);
 
   useEffect(() => {
     if (!followMe.current) {
@@ -66,6 +68,13 @@ export const Maps = () => {
         onTouchStart={() => {
           followMe.current = false;
         }}>
+        {showPolyLine && (
+          <Polyline
+            coordinates={routeLines}
+            strokeWidth={5}
+            strokeColor="black"
+          />
+        )}
         <Marker
           image={require('../assets/carlos.png')}
           coordinate={{
@@ -82,6 +91,17 @@ export const Maps = () => {
         style={{
           position: 'absolute',
           bottom: 10,
+          right: 10,
+        }}
+      />
+      <Fab
+        iconName="brush-outline"
+        onPress={() => {
+          setShowPolyline(!showPolyLine);
+        }}
+        style={{
+          position: 'absolute',
+          bottom: 80,
           right: 10,
         }}
       />

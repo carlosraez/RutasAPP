@@ -17,7 +17,7 @@ export const useLocation = () => {
     getCurrentLocation().then(resp => {
       setInitialPosition(resp);
       setCurrentUserPosition(resp);
-      setRouteLines([...routeLines, resp]);
+      setRouteLines(routes => [...routes, resp]);
       setHasLocation(true);
     });
   }, []);
@@ -50,7 +50,7 @@ export const useLocation = () => {
           longitude: coords.longitude,
           latitude: coords.latitude,
         });
-        setRouteLines([...routeLines, location]);
+        setRouteLines(routes => [...routes, location]);
       },
       error => {
         console.log(error);
@@ -72,5 +72,6 @@ export const useLocation = () => {
     followUser,
     currentUserPosition,
     stopFollowUserLocation,
+    routeLines,
   };
 };
